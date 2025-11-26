@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <title>Numyn – Privacy Policy (Draft)</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Draft privacy policy for Numyn bookkeeping software." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Numyn – Privacy Policy" />
+  <meta property="og:description" content="How Numyn handles information and licensing data." />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+
+  <!-- Tailwind CDN + Typography -->
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+
+  <!-- Tailwind config -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            numyn: {
+              navy: '#071B2F',
+              navyLight: '#0D2A46',
+              gold: '#F7B729',
+              goldLight: '#FFCC4D'
+            }
+          },
+          fontFamily: {
+            sans: ['Nunito', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Google Font Nunito -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/custom.css" />
+</head>
+<body class="min-h-screen bg-slate-100 text-slate-900 dark:bg-numyn-navy dark:text-slate-100 font-sans">
+
+  <header class="border-b border-slate-200/70 dark:border-white/5 sticky top-0 z-20 bg-white/90 dark:bg-numyn-navy/90 backdrop-blur">
+  <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+    <!-- Brand -->
+    <a href="index.html" class="flex items-center gap-2">
+      <img src="assets/numyn-logo.png" alt="Numyn logo" class="h-8 w-8 rounded-lg" />
+      <span class="text-lg font-extrabold tracking-tight text-slate-900 dark:text-slate-50">Numyn</span>
+    </a>
+
+    <div class="flex items-center gap-3">
+      <!-- Desktop nav -->
+      <nav class="hidden sm:flex items-center gap-6 text-sm text-slate-700 dark:text-slate-200">
+        <a href="features.html" class="hover:text-numyn-gold transition">Features</a>
+        <a href="purchase.html" class="hover:text-numyn-gold transition">Purchase</a>
+        <a href="faq.html" class="hover:text-numyn-gold transition">FAQ</a>
+        <a href="support.html" class="hover:text-numyn-gold transition">Support</a>
+      </nav>
+
+      <!-- Theme toggle -->
+      <button
+        type="button"
+        onclick="toggleTheme()"
+        class="hidden sm:inline-flex items-center justify-center rounded-full border border-slate-300/70 dark:border-white/20 px-2.5 py-1 text-xs font-medium text-slate-700 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-white/10 transition"
+      >
+        <span id="themeToggleIcon" aria-hidden="true">🌙</span>
+        <span class="sr-only">Toggle light/dark mode</span>
+      </button>
+
+      <!-- Desktop CTA -->
+      <a href="purchase.html" class="hidden sm:inline-flex px-4 py-2 rounded-full text-sm font-semibold bg-numyn-gold text-numyn-navy hover:bg-numyn-goldLight transition">
+        Get Numyn
+      </a>
+
+      <!-- Mobile hamburger -->
+      <button
+        id="mobileMenuButton"
+        type="button"
+        class="sm:hidden inline-flex items-center justify-center rounded-full border border-slate-300/70 dark:border-white/20 p-2 text-slate-700 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-white/10 transition"
+      >
+        <span id="mobileMenuIconOpen" aria-hidden="true">☰</span>
+        <span id="mobileMenuIconClose" class="hidden" aria-hidden="true">✕</span>
+        <span class="sr-only">Toggle navigation</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div
+    id="mobileMenu"
+    class="sm:hidden hidden border-t border-slate-200/70 dark:border-white/10 bg-white/95 dark:bg-numyn-navy/95"
+  >
+    <nav class="max-w-5xl mx-auto px-4 py-3 flex flex-col gap-3 text-sm text-slate-800 dark:text-slate-100">
+      <a href="features.html" class="py-1 hover:text-numyn-gold transition">Features</a>
+      <a href="purchase.html" class="py-1 hover:text-numyn-gold transition">Purchase</a>
+      <a href="faq.html" class="py-1 hover:text-numyn-gold transition">FAQ</a>
+      <a href="support.html" class="py-1 hover:text-numyn-gold transition">Support</a>
+
+      <button
+        type="button"
+        onclick="toggleTheme()"
+        class="mt-2 inline-flex items-center justify-center rounded-full border border-slate-300/70 dark:border-white/20 px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-white/10 transition"
+      >
+        <span id="themeToggleIconMobile" aria-hidden="true">🌙</span>
+        <span class="sr-only">Toggle light/dark mode</span>
+      </button>
+
+      <a
+        href="purchase.html"
+        class="mt-2 inline-flex items-center justify-center px-4 py-2 rounded-full text-sm font-semibold bg-numyn-gold text-numyn-navy hover:bg-numyn-goldLight transition"
+      >
+        Get Numyn
+      </a>
+    </nav>
+  </div>
+</header>
+
+
+  <main class="max-w-3xl mx-auto px-4 pt-10 pb-16 prose prose-slate dark:prose-invert prose-sm md:prose-base">
+    <h1>Privacy Policy (Draft)</h1>
+    <p><strong>Last updated:</strong> [Set your date here]</p>
+
+    <p>
+      This privacy policy is a draft starting point for Numyn. It does not constitute legal advice.
+      You should review and customize this page, and consider getting professional legal review before launch.
+    </p>
+
+    <h2>1. Who we are</h2>
+    <p>
+      Numyn is bookkeeping software developed and operated by a sole proprietor based in Canada (currently operating under the
+      business name K-Games &amp; Collectables). For the purposes of this policy, &ldquo;Numyn&rdquo;, &ldquo;we&rdquo;, and
+      &ldquo;us&rdquo; refer to the developer and operator of the Numyn software and related websites.
+    </p>
+
+    <h2>2. What this policy covers</h2>
+    <p>
+      This policy describes how we collect, use, and protect information in relation to:
+    </p>
+    <ul>
+      <li>The Numyn marketing website (e.g., numyn.ca and related subdomains).</li>
+      <li>Support and contact emails you send to addresses like support@numyn.ca.</li>
+      <li>Optional analytics or crash reporting services, if and when they are enabled.</li>
+    </ul>
+    <p>
+      <strong>This policy does not cover your own bookkeeping data that lives locally inside the Numyn desktop app</strong>,
+      which is designed to store data on your own machine rather than in our cloud infrastructure.
+    </p>
+
+    <h2>3. Information we collect</h2>
+    <h3>3.1 Website and contact</h3>
+    <p>We may collect:</p>
+    <ul>
+      <li>Basic web server logs (IP address, browser type, approximate region, timestamps).</li>
+      <li>Information you choose to send via email (e.g., name, email address, business details, questions).</li>
+      <li>Information you submit through any future contact or feedback forms on the site.</li>
+    </ul>
+
+    <h3>3.2 Purchases and licensing</h3>
+    <p>
+      When you purchase a Numyn license, payments will be handled by a third-party provider (such as Lemon Squeezy).
+      They may collect personal and payment information as part of the checkout process. We do not store your full payment card
+      details on our own servers.
+    </p>
+
+    <p>
+      We may receive limited information from the payment provider, such as your name, email address, country, and license details,
+      in order to manage your license and provide support.
+    </p>
+
+    <h3>3.3 Application data</h3>
+    <p>
+      Numyn is designed to function primarily as a local desktop application. By default, your bookkeeping records and financial
+      data are stored on your own device. We do not automatically receive or store your local bookkeeping data on our servers.
+    </p>
+    <p>
+      If we introduce optional cloud features or backups in the future, those features will be clearly described and this policy
+      will be updated to explain how any associated data is handled.
+    </p>
+
+    <h2>4. How we use information</h2>
+    <ul>
+      <li>To respond to questions, support requests, and feedback.</li>
+      <li>To provide license information, receipts, and important notices about Numyn.</li>
+      <li>To maintain and improve the website and overall user experience.</li>
+      <li>To understand general usage trends in an aggregated, non-identifying way.</li>
+    </ul>
+
+    <h2>5. Email and communications</h2>
+    <p>
+      If you contact us at support@numyn.ca or other official addresses, we will use the information you provide to respond
+      to your inquiries, troubleshoot issues, and provide product-related updates where appropriate.
+    </p>
+
+    <h2>6. Third-party services</h2>
+    <p>
+      Numyn may use third-party providers for services such as:
+    </p>
+    <ul>
+      <li>Payment processing and licensing (e.g., Lemon Squeezy).</li>
+      <li>Website hosting (e.g., GitHub Pages).</li>
+      <li>Basic site analytics, if enabled.</li>
+    </ul>
+    <p>
+      These providers have their own privacy policies, which govern how they handle your information.
+    </p>
+
+    <h2>7. Data retention</h2>
+    <p>
+      We retain email communications and licensing records for as long as reasonably necessary to provide support,
+      comply with legal requirements, and maintain business records. You can request that we delete certain information,
+      subject to any legal obligations we may have to retain it.
+    </p>
+
+    <h2>8. Your rights</h2>
+    <p>
+      Depending on your jurisdiction, you may have rights related to your personal information, such as the right to access,
+      correct, or request deletion of your data. If you have questions or want to make a request, contact us at
+      <a href="mailto:support@numyn.ca">support@numyn.ca</a>.
+    </p>
+
+    <h2>9. Changes to this policy</h2>
+    <p>
+      This privacy policy may be updated from time to time. If we make material changes, we will update the &ldquo;Last updated&rdquo;
+      date above and may provide additional notice as appropriate.
+    </p>
+
+    <h2>10. Contact</h2>
+    <p>
+      If you have questions about this policy or how Numyn handles information, you can contact:
+    </p>
+    <p>
+      <strong>Email:</strong> <a href="mailto:support@numyn.ca">support@numyn.ca</a>
+    </p>
+
+    <hr />
+    <p class="text-xs text-slate-500 dark:text-slate-300/80">
+      This page is a non-binding draft provided for planning purposes and should be reviewed and customized before launch.
+      It does not replace professional legal advice.
+    </p>
+  </main>
+
+  <footer class="border-t border-slate-200/70 dark:border-white/10 mt-10">
+    <div class="max-w-5xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-300/80">
+      <p>© <span id="year"></span> Numyn. Built in Canada by Kayden Cormier.</p>
+      <div class="flex gap-4">
+        <a href="privacy.html" class="hover:text-numyn-gold">Privacy</a>
+        <a href="eula.html" class="hover:text-numyn-gold">EULA</a>
+        <a href="faq.html" class="hover:text-numyn-gold">FAQ</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    const html = document.documentElement;
+
+    // Theme preference
+    const stored = localStorage.getItem("numyn-theme");
+    const systemPrefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    const useDark = stored ? stored === "dark" : systemPrefersDark;
+    html.classList.toggle("dark", useDark);
+
+    const iconDesktop = document.getElementById("themeToggleIcon");
+    const iconMobile = document.getElementById("themeToggleIconMobile");
+
+    if (iconDesktop) iconDesktop.textContent = useDark ? "🌙" : "☀️";
+    if (iconMobile) iconMobile.textContent = useDark ? "🌙" : "☀️";
+
+    // Footer year
+    const yearEl = document.getElementById("year");
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    // Mobile menu
+    const mobileBtn = document.getElementById("mobileMenuButton");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const iconOpen = document.getElementById("mobileMenuIconOpen");
+    const iconClose = document.getElementById("mobileMenuIconClose");
+
+    if (mobileBtn && mobileMenu && iconOpen && iconClose) {
+      mobileBtn.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+        iconOpen.classList.toggle("hidden");
+        iconClose.classList.toggle("hidden");
+      });
+    }
+  })();
+
+  function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.classList.toggle("dark");
+    localStorage.setItem("numyn-theme", isDark ? "dark" : "light");
+
+    const iconDesktop = document.getElementById("themeToggleIcon");
+    const iconMobile = document.getElementById("themeToggleIconMobile");
+
+    if (iconDesktop) iconDesktop.textContent = isDark ? "🌙" : "☀️";
+    if (iconMobile) iconMobile.textContent = isDark ? "🌙" : "☀️";
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+/* Numyn custom styles shared across pages */
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Hide scrollbars on horizontal product strip in supported browsers */
+#productStrip {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.7) transparent;
+}
+#productStrip::-webkit-scrollbar {
+  height: 6px;
+}
+#productStrip::-webkit-scrollbar-track {
+  background: transparent;
+}
+#productStrip::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.7);
+  border-radius: 9999px;
+}
+
+/* basic link styling inside prose */
+.prose a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}

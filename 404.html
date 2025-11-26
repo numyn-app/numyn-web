@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <title>Numyn – Page Not Found</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="The page you are looking for could not be found." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Numyn – Page Not Found" />
+  <meta property="og:description" content="This Numyn page went off the books." />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind config -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            numyn: {
+              navy: '#071B2F',
+              navyLight: '#0D2A46',
+              gold: '#F7B729',
+              goldLight: '#FFCC4D'
+            }
+          },
+          fontFamily: {
+            sans: ['Nunito', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Google Font Nunito -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/custom.css" />
+</head>
+<body class="min-h-screen bg-slate-100 text-slate-900 dark:bg-numyn-navy dark:text-slate-100 font-sans">
+
+  <main class="min-h-screen flex flex-col items-center justify-center px-4 text-center">
+    <div class="mb-6">
+      <img src="assets/numyn-logo.png" alt="Numyn logo" class="h-16 w-16 mx-auto mb-4 rounded-2xl" />
+      <p class="text-xs font-semibold uppercase tracking-[0.25em] text-numyn-gold">404 · Page not found</p>
+    </div>
+    <h1 class="text-3xl md:text-4xl font-extrabold mb-3 text-slate-900 dark:text-slate-50">This page went off the books.</h1>
+    <p class="text-sm md:text-base text-slate-700/90 dark:text-slate-200/90 max-w-md mb-6">
+      We couldn&apos;t find the page you were looking for. It might have been moved,
+      renamed, or never existed.
+    </p>
+    <div class="flex flex-wrap gap-3 justify-center">
+      <a href="index.html" class="px-5 py-2.5 rounded-full text-sm font-semibold bg-numyn-gold text-numyn-navy hover:bg-numyn-goldLight transition">
+        Back to home
+      </a>
+      <a href="purchase.html" class="px-5 py-2.5 rounded-full text-sm font-semibold border border-slate-300 text-slate-800 hover:bg-slate-100 dark:border-white/20 dark:text-slate-100 dark:hover:bg-white/5 transition">
+        View purchase options
+      </a>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      const html = document.documentElement;
+      let stored = localStorage.getItem("numyn-theme");
+      if (!stored) {
+        stored = "dark";
+        localStorage.setItem("numyn-theme", "dark");
+      }
+      if (stored === "dark") {
+        html.classList.add("dark");
+      } else {
+        html.classList.remove("dark");
+      }
+    })();
+  </script>
+</body>
+</html>

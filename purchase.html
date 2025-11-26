@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <title>Numyn – Purchase</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Choose your Numyn license, add-ons, and launch bundle." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Numyn – Purchase" />
+  <meta property="og:description" content="Start with Numyn Core, add Tax Helper, or pick the Launch Bundle." />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+
+  <!-- Tailwind CDN + (no extra plugins needed here) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind config -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            numyn: {
+              navy: '#071B2F',
+              navyLight: '#0D2A46',
+              gold: '#F7B729',
+              goldLight: '#FFCC4D'
+            }
+          },
+          fontFamily: {
+            sans: ['Nunito', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Google Font Nunito -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/custom.css" />
+
+  <!-- Three.js -->
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+</head>
+
+<body class="min-h-screen bg-slate-50 text-slate-900 dark:bg-numyn-navy dark:text-slate-100 font-sans overflow-x-hidden">
+
+  <!-- HEADER (shared across site) -->
+  <header class="border-b border-slate-200/70 dark:border-white/5 sticky top-0 z-20 bg-white/90 dark:bg-numyn-navy/90 backdrop-blur">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+      <!-- Brand -->
+      <a href="index.html" class="flex items-center gap-2">
+        <img src="assets/numyn-logo.png" alt="Numyn logo" class="h-8 w-8 rounded-lg" />
+        <span class="text-lg font-extrabold tracking-tight text-slate-900 dark:text-slate-50">Numyn</span>
+      </a>
+
+      <div class="flex items-center gap-3">
+        <!-- Desktop nav -->
+        <nav class="hidden sm:flex items-center gap-6 text-sm text-slate-700 dark:text-slate-200">
+          <a href="features.html" class="hover:text-numyn-gold transition">Features</a>
+          <a href="purchase.html" class="hover:text-numyn-gold transition">Purchase</a>
+          <a href="faq.html" class="hover:text-numyn-gold transition">FAQ</a>
+          <a href="support.html" class="hover:text-numyn-gold transition">Support</a>
+        </nav>
+
+        <!-- Theme toggle (desktop) -->
+        <button
+          type="button"
+          onclick="toggleTheme()"
+          class="hidden sm:inline-flex items-center justify-center rounded-full border border-slate-300/70 dark:border-white/20 px-2.5 py-1 text-xs font-medium text-slate-700 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-white/10 transition"
+        >
+          <span id="themeToggleIcon" aria-hidden="true">🌙</span>
+          <span class="sr-only">Toggle light/dark mode</span>
+        </button>
+
+        <!-- Desktop CTA -->
+        <a href="purchase.html" class="hidden sm:inline-flex px-4 py-2 rounded-full text-sm font-semibold bg-numyn-gold text-numyn-navy hover:bg-numyn-goldLight transition">
+          Get Numyn
+        </a>
+
+        <!-- Mobile hamburger -->
+        <button
+          id="mobileMenuButton"
+          type="button"
+          class="sm:hidden inline-flex items-center justify-center rounded-full border border-slate-300/70 dark:border-white/20 p-2 text-slate-700 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-white/10 transition"
+        >
+          <span id="mobileMenuIconOpen" aria-hidden="true">☰</span>
+          <span id="mobileMenuIconClose" class="hidden" aria-hidden="true">✕</span>
+          <span class="sr-only">Toggle navigation</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div
+      id="mobileMenu"
+      class="sm:hidden hidden border-t border-slate-200/70 dark:border-white/10 bg-white/95 dark:bg-numyn-navy/95"
+    >
+      <nav class="max-w-5xl mx-auto px-4 py-3 flex flex-col gap-3 text-sm text-slate-800 dark:text-slate-100">
+        <a href="features.html" class="py-1 hover:text-numyn-gold transition">Features</a>
+        <a href="purchase.html" class="py-1 hover:text-numyn-gold transition">Purchase</a>
+        <a href="faq.html" class="py-1 hover:text-numyn-gold transition">FAQ</a>
+        <a href="support.html" class="py-1 hover:text-numyn-gold transition">Support</a>
+
+        <button
+          type="button"
+          onclick="toggleTheme()"
+          class="mt-2 inline-flex items-center justify-center rounded-full border border-slate-300/70 dark:border-white/20 px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-white/10 transition"
+        >
+          <span id="themeToggleIconMobile" aria-hidden="true">🌙</span>
+          <span class="sr-only">Toggle light/dark mode</span>
+        </button>
+
+        <a
+          href="purchase.html"
+          class="mt-2 inline-flex items-center justify-center px-4 py-2 rounded-full text-sm font-semibold bg-numyn-gold text-numyn-navy hover:bg-numyn-goldLight transition"
+        >
+          Get Numyn
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="max-w-5xl mx-auto px-4 pt-10 pb-16">
+    <section class="mb-10 text-center">
+      <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-slate-50">
+        Choose your Numyn setup.
+      </h1>
+      <p class="text-sm md:text-base text-slate-700/90 dark:text-slate-200/90 max-w-2xl mx-auto mt-2">
+        Start with Numyn Core, add Tax Helper, or pick the Launch Bundle for better value.  
+        Future modules like Inventory and Payroll will roll out over time.
+      </p>
+    </section>
+
+    <section class="grid lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-10 items-center">
+      <!-- Left: Cube + active product info -->
+      <div class="flex flex-col items-center gap-6">
+        <div class="w-full max-w-sm aspect-square rounded-3xl bg-slate-100 border border-slate-200 shadow-2xl flex items-center justify-center dark:bg-numyn-navyLight/70 dark:border-white/10">
+          <canvas id="numynCubeCanvas" class="w-full h-full"></canvas>
+        </div>
+
+        <div class="text-center max-w-md">
+          <p id="activeBadge" class="text-[11px] font-semibold uppercase tracking-[0.2em] text-numyn-gold mb-2">
+            Core App
+          </p>
+          <h3 id="activeName" class="text-2xl font-extrabold mb-2 text-slate-900 dark:text-slate-50">
+            Numyn Core
+          </h3>
+          <p id="activeDescription" class="text-sm text-slate-700/90 dark:text-slate-200/90 mb-3">
+            The main Numyn desktop app for bookkeeping, forms, and financial tracking.
+          </p>
+          <p id="activeStatus" class="text-xs text-slate-500 dark:text-slate-300/85 mb-4">
+            Status: <span class="font-semibold text-emerald-300">Available at launch</span>
+          </p>
+
+          <div class="flex flex-col items-center gap-2">
+            <p id="activePrice" class="text-sm text-slate-700/90 dark:text-slate-200/90">
+              Pricing: <span class="font-semibold">TBD</span> (CAD · one-time license)
+            </p>
+
+            <button
+              id="buyButton"
+              class="mt-2 inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-semibold bg-numyn-gold text-numyn-navy hover:bg-numyn-goldLight transition disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              Buy License (Coming Soon)
+            </button>
+
+            <p class="mt-1 text-[11px] text-slate-500 dark:text-slate-300/80">
+              Secure checkout will be handled via Lemon Squeezy at launch.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: product strip -->
+      <div class="w-full">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-300/80 mb-3">
+          Modules &amp; bundles
+        </p>
+
+        <div
+          id="productStrip"
+          class="flex gap-4 overflow-x-auto pb-3 -mx-4 px-4 snap-x snap-mandatory"
+        >
+          <!-- Launch Bundle -->
+          <button
+            class="product-card snap-center shrink-0 w-60 rounded-2xl border border-numyn-gold bg-slate-50 p-4 text-left flex flex-col gap-2 transition transform hover:-translate-y-1 data-[active=true]:bg-slate-100 dark:bg-numyn-navyLight/60 dark:border-numyn-gold/80 dark:data-[active=true]:bg-numyn-navyLight/80"
+            data-product-id="launch-bundle"
+          >
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-numyn-gold uppercase tracking-[0.18em]">
+                Bundle
+              </span>
+              <span class="text-[11px] px-2 py-0.5 rounded-full bg-amber-300/20 text-amber-900 dark:bg-amber-300/20 dark:text-amber-100">
+                Best value
+              </span>
+            </div>
+            <p class="text-sm font-semibold text-slate-900 dark:text-slate-50">Numyn Launch Bundle</p>
+            <p class="text-xs text-slate-700/90 dark:text-slate-200/85">
+              Includes Numyn Core + Tax Helper together for a discounted one-time price.
+            </p>
+          </button>
+
+          <!-- Numyn Core -->
+          <button
+            class="product-card snap-center shrink-0 w-60 rounded-2xl border border-numyn-gold/60 bg-white p-4 text-left flex flex-col gap-2 transition transform hover:-translate-y-1 data-[active=true]:border-numyn-gold data-[active=true]:bg-slate-100 dark:bg-white/5 dark:border-numyn-gold/60 dark:data-[active=true]:bg-numyn-navyLight/70"
+            data-product-id="core"
+          >
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-numyn-gold uppercase tracking-[0.18em]">
+                Core App
+              </span>
+              <span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-400/10 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200">
+                Launch
+              </span>
+            </div>
+            <p class="text-sm font-semibold text-slate-900 dark:text-slate-50">Numyn Core</p>
+            <p class="text-xs text-slate-700/90 dark:text-slate-200/85">
+              Main bookkeeping and forms engine. Everything starts here.
+            </p>
+          </button>
+
+          <!-- Numyn Tax Helper -->
+          <button
+            class="product-card snap-center shrink-0 w-60 rounded-2xl border border-slate-200 bg-white p-4 text-left flex flex-col gap-2 transition transform hover:-translate-y-1 data-[active=true]:border-numyn-gold data-[active=true]:bg-slate-100 dark:border-white/15 dark:bg-white/5 dark:data-[active=true]:bg-numyn-navyLight/70"
+            data-product-id="tax"
+          >
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-numyn-gold uppercase tracking-[0.18em]">
+                Add-on
+              </span>
+              <span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-400/10 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200">
+                Launch
+              </span>
+            </div>
+            <p class="text-sm font-semibold text-slate-900 dark:text-slate-50">Numyn Tax Helper</p>
+            <p class="text-xs text-slate-700/90 dark:text-slate-200/85">
+              Tools and exports designed to support your T2125 and tax workflow.
+            </p>
+          </button>
+
+          <!-- Numyn Inventory (coming soon) -->
+          <button
+            class="product-card snap-center shrink-0 w-60 rounded-2xl border border-slate-200 bg-slate-100 p-4 text-left flex flex-col gap-2 transition transform hover:-translate-y-1 data-[active=true]:border-slate-400 data-[active=true]:bg-slate-200 opacity-70 dark:border-white/10 dark:bg-white/5 dark:data-[active=true]:bg-slate-700/60"
+            data-product-id="inventory"
+          >
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-slate-500 uppercase tracking-[0.18em] dark:text-slate-300">
+                Add-on
+              </span>
+              <span class="text-[11px] px-2 py-0.5 rounded-full bg-slate-300 text-slate-800 dark:bg-slate-500/30 dark:text-slate-100">
+                Coming soon
+              </span>
+            </div>
+            <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">Numyn Inventory</p>
+            <p class="text-xs text-slate-700/85 dark:text-slate-200/80">
+              Deeper inventory tracking and reporting for product-based businesses.
+            </p>
+          </button>
+
+          <!-- Numyn Payroll (coming soon) -->
+          <button
+            class="product-card snap-center shrink-0 w-60 rounded-2xl border border-slate-200 bg-slate-100 p-4 text-left flex flex-col gap-2 transition transform hover:-translate-y-1 data-[active=true]:border-slate-400 data-[active=true]:bg-slate-200 opacity-70 dark:border-white/10 dark:bg-white/5 dark:data-[active=true]:bg-slate-700/60"
+            data-product-id="payroll"
+          >
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-slate-500 uppercase tracking-[0.18em] dark:text-slate-300">
+                Add-on
+              </span>
+              <span class="text-[11px] px-2 py-0.5 rounded-full bg-slate-300 text-slate-800 dark:bg-slate-500/30 dark:text-slate-100">
+                Coming soon
+              </span>
+            </div>
+            <p class="text-sm font-semibold text-slate-800 dark:text-slate-100">Numyn Payroll</p>
+            <p class="text-xs text-slate-700/85 dark:text-slate-200/80">
+              Planned tools to help small teams track payroll-related records inside Numyn.
+            </p>
+          </button>
+        </div>
+
+        <p class="mt-3 text-[11px] text-slate-500 dark:text-slate-300/80">
+          Modules marked as <span class="font-semibold text-emerald-600 dark:text-emerald-200">Launch</span> are planned for the initial release.
+          Others are in active design and will be rolled out over time.  
+          The Launch Bundle includes both Numyn Core and Tax Helper together at a discounted one-time price (details TBD).
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-200/70 dark:border-white/10 mt-10">
+    <div class="max-w-5xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-300/80">
+      <p>© <span id="year"></span> Numyn. Built in Canada by Kayden Cormier.</p>
+      <div class="flex gap-4">
+        <a href="privacy.html" class="hover:text-numyn-gold">Privacy</a>
+        <a href="eula.html" class="hover:text-numyn-gold">EULA</a>
+        <a href="faq.html" class="hover:text-numyn-gold">FAQ</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- THEME + MOBILE MENU SCRIPT (shared) -->
+  <script>
+    (function () {
+      const html = document.documentElement;
+
+      // Theme preference
+      const stored = localStorage.getItem("numyn-theme");
+      const systemPrefersDark =
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+      const useDark = stored ? stored === "dark" : systemPrefersDark;
+      html.classList.toggle("dark", useDark);
+
+      const iconDesktop = document.getElementById("themeToggleIcon");
+      const iconMobile = document.getElementById("themeToggleIconMobile");
+
+      if (iconDesktop) iconDesktop.textContent = useDark ? "🌙" : "☀️";
+      if (iconMobile) iconMobile.textContent = useDark ? "🌙" : "☀️";
+
+      // Footer year
+      const yearEl = document.getElementById("year");
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+      // Mobile menu
+      const mobileBtn = document.getElementById("mobileMenuButton");
+      const mobileMenu = document.getElementById("mobileMenu");
+      const iconOpen = document.getElementById("mobileMenuIconOpen");
+      const iconClose = document.getElementById("mobileMenuIconClose");
+
+      if (mobileBtn && mobileMenu && iconOpen && iconClose) {
+        mobileBtn.addEventListener("click", () => {
+          mobileMenu.classList.toggle("hidden");
+          iconOpen.classList.toggle("hidden");
+          iconClose.classList.toggle("hidden");
+        });
+      }
+    })();
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.classList.toggle("dark");
+      localStorage.setItem("numyn-theme", isDark ? "dark" : "light");
+
+      const iconDesktop = document.getElementById("themeToggleIcon");
+      const iconMobile = document.getElementById("themeToggleIconMobile");
+
+      if (iconDesktop) iconDesktop.textContent = isDark ? "🌙" : "☀️";
+      if (iconMobile) iconMobile.textContent = isDark ? "🌙" : "☀️";
+    }
+  </script>
+
+  <!-- CUBE + PRODUCT LOGIC -->
+  <script>
+    const NUMYN_PRODUCTS = [
+      {
+        id: "launch-bundle",
+        name: "Numyn Launch Bundle",
+        badge: "Bundle",
+        description: "Includes Numyn Core + Tax Helper together for a discounted one-time price.",
+        status: "launch",
+        statusText: "Planned for launch with bundled pricing",
+        priceLabel: "Pricing: TBD (CAD · one-time bundle)",
+        color: 0xFFCC4D,
+      },
+      {
+        id: "core",
+        name: "Numyn Core",
+        badge: "Core App",
+        description: "The main Numyn desktop app for bookkeeping, forms, and financial tracking.",
+        status: "launch",
+        statusText: "Available at launch",
+        priceLabel: "Pricing: TBD (CAD · one-time license)",
+        color: 0xF7B729,
+      },
+      {
+        id: "tax",
+        name: "Numyn Tax Helper",
+        badge: "Add-on",
+        description: "Tools and exports designed to support your T2125 and tax workflow.",
+        status: "launch",
+        statusText: "Available alongside Numyn Core at launch",
+        priceLabel: "Pricing: TBD (CAD · add-on module)",
+        color: 0x34D399,
+      },
+      {
+        id: "inventory",
+        name: "Numyn Inventory",
+        badge: "Add-on",
+        description: "Deeper inventory tracking, quantities, and reports for product-based businesses.",
+        status: "coming-soon",
+        statusText: "Planned add-on, currently in design",
+        priceLabel: "Pricing to be announced closer to release",
+        color: 0x9CA3AF,
+      },
+      {
+        id: "payroll",
+        name: "Numyn Payroll",
+        badge: "Add-on",
+        description: "Planned future module to help small teams track payroll-related records within Numyn.",
+        status: "coming-soon",
+        statusText: "Planned add-on, currently in early design",
+        priceLabel: "Pricing to be announced closer to release",
+        color: 0x6366F1,
+      },
+    ];
+
+    const activeBadgeEl = document.getElementById("activeBadge");
+    const activeNameEl = document.getElementById("activeName");
+    const activeDescriptionEl = document.getElementById("activeDescription");
+    const activeStatusEl = document.getElementById("activeStatus");
+    const activePriceEl = document.getElementById("activePrice");
+    const buyButtonEl = document.getElementById("buyButton");
+    const productCards = Array.from(document.querySelectorAll(".product-card"));
+
+    let activeProductId = "core";
+    let cubeMaterial = null;
+    let scene, camera, renderer, cube;
+    let baseRotationSpeed = 0.005;
+    let spinBoost = 0;
+
+    function setActiveProduct(id) {
+      const product = NUMYN_PRODUCTS.find((p) => p.id === id);
+      if (!product) return;
+      activeProductId = id;
+
+      activeBadgeEl.textContent = product.badge;
+      activeNameEl.textContent = product.name;
+      activeDescriptionEl.textContent = product.description;
+      activeStatusEl.innerHTML =
+        'Status: <span class="font-semibold ' +
+        (product.status === "launch"
+          ? "text-emerald-600 dark:text-emerald-300"
+          : "text-slate-600 dark:text-slate-200") +
+        '">' +
+        product.statusText +
+        "</span>";
+
+      activePriceEl.textContent = product.priceLabel;
+
+      if (product.status === "coming-soon") {
+        buyButtonEl.disabled = true;
+        buyButtonEl.textContent = "Coming Soon";
+      } else {
+        buyButtonEl.disabled = true; // enable & wire LS later
+        buyButtonEl.textContent = "Buy License (Coming Soon)";
+      }
+
+      if (cubeMaterial) {
+        cubeMaterial.color.setHex(product.color);
+        spinBoost = 0.18;
+      }
+
+      productCards.forEach((card) => {
+        const isActive = card.dataset.productId === id;
+        card.dataset.active = isActive ? "true" : "false";
+      });
+    }
+
+    productCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        const id = card.dataset.productId;
+        setActiveProduct(id);
+        card.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      });
+    });
+
+    function initCube() {
+      const canvas = document.getElementById("numynCubeCanvas");
+      if (!canvas || !window.THREE) return;
+
+      scene = new THREE.Scene();
+      scene.background = null;
+
+      const aspect = canvas.clientWidth / canvas.clientHeight || 1;
+      camera = new THREE.PerspectiveCamera(35, aspect, 0.1, 100);
+      camera.position.z = 5;
+
+      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+      renderer.setPixelRatio(window.devicePixelRatio || 1);
+      renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+
+      const ambient = new THREE.AmbientLight(0xffffff, 0.7);
+      scene.add(ambient);
+
+      const directional = new THREE.DirectionalLight(0xffffff, 0.8);
+      directional.position.set(3, 4, 5);
+      scene.add(directional);
+
+      const geometry = new THREE.BoxGeometry(1.8, 1.8, 1.8);
+      cubeMaterial = new THREE.MeshStandardMaterial({
+        color: 0xF7B729,
+        metalness: 0.3,
+        roughness: 0.35,
+      });
+
+      cube = new THREE.Mesh(geometry, cubeMaterial);
+      scene.add(cube);
+
+      window.addEventListener("resize", () => onWindowResizeCube(canvas));
+      animateCube();
+    }
+
+    function onWindowResizeCube(canvas) {
+      if (!renderer || !camera || !canvas) return;
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight || width;
+
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height, false);
+    }
+
+    function animateCube() {
+      requestAnimationFrame(animateCube);
+
+      const speed = baseRotationSpeed + spinBoost;
+      if (cube) {
+        cube.rotation.y += speed;
+        cube.rotation.x += speed * 0.4;
+      }
+
+      if (spinBoost > 0) {
+        spinBoost = Math.max(0, spinBoost - 0.003);
+      }
+
+      if (renderer && scene && camera) {
+        renderer.render(scene, camera);
+      }
+    }
+
+    initCube();
+    setActiveProduct("launch-bundle");
+  </script>
+</body>
+</html>

@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <title>Numyn – Modern Bookkeeping, Made Easy</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Numyn is modern bookkeeping software for Canadian sole proprietors and small businesses." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Numyn – Modern Bookkeeping, Made Easy" />
+  <meta property="og:description" content="Smart, simple bookkeeping and forms automation." />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+
+  <!-- Tailwind CDN + Typography plugin -->
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+
+  <!-- Tailwind config -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            numyn: {
+              navy: '#071B2F',
+              navyLight: '#0D2A46',
+              gold: '#F7B729',
+              goldLight: '#FFCC4D'
+            }
+          },
+          fontFamily: {
+            sans: ['Nunito', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Google Font Nunito -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Custom CSS (optional tweaks) -->
+  <link rel="stylesheet" href="css/custom.css" />
+</head>
+<body class="min-h-screen bg-slate-100 text-slate-900 dark:bg-numyn-navy dark:text-slate-100 font-sans overflow-x-hidden">
+  <!-- Background logo (dark mode only) -->
+  <div class="pointer-events-none fixed inset-0 hidden items-center justify-center -z-10 dark:flex">
+    <img src="assets/numyn-logo.png"
+         class="w-[60vw] opacity-5 md:opacity-10 drop-shadow-[0_0_40px_rgba(0,0,0,0.6)]"
+         alt="Numyn logo background">
+  </div>
+
+  <header class="border-b border-slate-200/70 dark:border-white/5 sticky top-0 z-20 bg-white/90 dark:bg-numyn-navy/90 backdrop-blur">
+  <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+    <!-- Brand -->
+    <a href="index.html" class="flex items-center gap-2">
+      <img src="assets/numyn-logo.png" alt="Numyn logo" class="h-8 w-8 rounded-lg" />
+      <span class="text-lg font-extrabold tracking-tight text-slate-900 dark:text-slate-50">Numyn</span>
+    </a>
+
+    <div class="flex items-center gap-3">
+      <!-- Desktop nav -->
+      <nav class="hidden sm:flex items-center gap-6 text-sm text-slate-700 dark:text-slate-200">
+        <a href="features.html" class="hover:text-numyn-gold transition">Features</a>
+        <a href="purchase.html" class="hover:text-numyn-gold transition">Purchase</a>
+        <a href="faq.html" class="hover:text-numyn-gold transition">FAQ</a>
+        <a href="support.html" class="hover:text-numyn-gold transition">Support</a>
+      </nav>
+
+      <!-- Theme toggle -->
+      <button
+        type="button"
+        onclick="toggleTheme()"
+        class="hidden sm:inline-flex items-center justify-center rounded-full border border-slate-300/70 dark:border-white/20 px-2.5 py-1 text-xs font-medium text-slate-700 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-white/10 transition"
+      >
+        <span id="themeToggleIcon" aria-hidden="true">🌙</span>
+        <span class="sr-only">Toggle light/dark mode</span>
+      </button>
+
+      <!-- Desktop CTA -->
+      <a href="purchase.html" class="hidden sm:inline-flex px-4 py-2 rounded-full text-sm font-semibold bg-numyn-gold text-numyn-navy hover:bg-numyn-goldLight transition">
+        Get Numyn
+      </a>
+
+      <!-- Mobile hamburger -->
+      <button
+        id="mobileMenuButton"
+        type="button"
+        class="sm:hidden inline-flex items-center justify-center rounded-full border border-slate-300/70 dark:border-white/20 p-2 text-slate-700 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-white/10 transition"
+      >
+        <span id="mobileMenuIconOpen" aria-hidden="true">☰</span>
+        <span id="mobileMenuIconClose" class="hidden" aria-hidden="true">✕</span>
+        <span class="sr-only">Toggle navigation</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div
+    id="mobileMenu"
+    class="sm:hidden hidden border-t border-slate-200/70 dark:border-white/10 bg-white/95 dark:bg-numyn-navy/95"
+  >
+    <nav class="max-w-5xl mx-auto px-4 py-3 flex flex-col gap-3 text-sm text-slate-800 dark:text-slate-100">
+      <a href="features.html" class="py-1 hover:text-numyn-gold transition">Features</a>
+      <a href="purchase.html" class="py-1 hover:text-numyn-gold transition">Purchase</a>
+      <a href="faq.html" class="py-1 hover:text-numyn-gold transition">FAQ</a>
+      <a href="support.html" class="py-1 hover:text-numyn-gold transition">Support</a>
+
+      <button
+        type="button"
+        onclick="toggleTheme()"
+        class="mt-2 inline-flex items-center justify-center rounded-full border border-slate-300/70 dark:border-white/20 px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-white/10 transition"
+      >
+        <span id="themeToggleIconMobile" aria-hidden="true">🌙</span>
+        <span class="sr-only">Toggle light/dark mode</span>
+      </button>
+
+      <a
+        href="purchase.html"
+        class="mt-2 inline-flex items-center justify-center px-4 py-2 rounded-full text-sm font-semibold bg-numyn-gold text-numyn-navy hover:bg-numyn-goldLight transition"
+      >
+        Get Numyn
+      </a>
+    </nav>
+  </div>
+</header>
+
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-slate-100 to-slate-50 dark:from-numyn-navyLight/40 dark:to-numyn-navy"></div>
+    <div class="relative max-w-5xl mx-auto px-4 pt-16 pb-20 flex flex-col md:flex-row items-center gap-10">
+      <div class="flex-1">
+        <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 border border-slate-200 text-slate-700 px-3 py-1 text-xs font-medium dark:bg-white/5 dark:border-white/10 dark:text-slate-200">
+          New · Solo founder friendly
+        </span>
+        <h1 class="mt-5 text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-slate-50">
+          Modern Bookkeeping, <span class="text-numyn-gold">Made Easy.</span>
+        </h1>
+        <p class="mt-4 text-base md:text-lg text-slate-700/90 dark:text-slate-200/90 max-w-xl">
+          Numyn helps Canadian sole proprietors and small businesses keep clean books,
+          track forms, and stay ready for tax time—without feeling like you need an accounting degree.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="purchase.html" class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-semibold bg-numyn-gold text-numyn-navy hover:bg-numyn-goldLight transition">
+            View Purchase Options
+          </a>
+          <a href="#features" class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-semibold border border-slate-300 text-slate-800 hover:bg-slate-100 dark:border-white/15 dark:text-slate-100 dark:hover:bg-white/5 transition">
+            View Features
+          </a>
+        </div>
+        <p class="mt-3 text-xs text-slate-500 dark:text-slate-300/80">
+          One-time license. Your data stays on your machine.
+        </p>
+      </div>
+
+      <div class="flex-1 flex justify-center">
+        <div class="relative rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur p-6 w-full max-w-sm shadow-2xl">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="flex -space-x-1">
+              <span class="h-2.5 w-2.5 rounded-full bg-rose-400"></span>
+              <span class="h-2.5 w-2.5 rounded-full bg-amber-300"></span>
+              <span class="h-2.5 w-2.5 rounded-full bg-emerald-400"></span>
+            </div>
+            <span class="text-[10px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-300/80">Numyn Snapshot</span>
+          </div>
+          <div class="space-y-3 text-xs">
+            <div class="flex justify-between text-slate-700 dark:text-slate-200">
+              <span>Fiscal Year 2026</span>
+              <span class="font-semibold text-numyn-gold">Current</span>
+            </div>
+            <div class="rounded-2xl bg-slate-100 border border-slate-200 p-4 space-y-3 dark:bg-numyn-navyLight/70 dark:border-white/5">
+              <div class="flex justify-between text-[11px] text-slate-700/90 dark:text-slate-200/90">
+                <span>Total Revenue</span>
+                <span>$ 42,380</span>
+              </div>
+              <div class="flex justify-between text-[11px] text-slate-700/90 dark:text-slate-200/90">
+                <span>Expenses</span>
+                <span>$ 19,450</span>
+              </div>
+              <div class="flex justify-between text-[11px] font-semibold text-slate-900 dark:text-slate-50">
+                <span>Estimated Net</span>
+                <span>$ 22,930</span>
+              </div>
+            </div>
+            <p class="text-[11px] text-slate-600 dark:text-slate-300/80">
+              Designed for Canadian small businesses, with forms and exports ready for your accountant or tax software.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="max-w-5xl mx-auto px-4 py-16">
+    <div class="text-center mb-10">
+      <h2 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-50">Built for real small businesses.</h2>
+      <p class="mt-3 text-slate-700/90 dark:text-slate-200/90 max-w-2xl mx-auto text-sm md:text-base">
+        Numyn focuses on what you actually need: clean records, clear exports, and simple workflows.
+      </p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-white/5">
+        <h3 class="font-semibold mb-2 text-numyn-gold">Bookkeeping that makes sense</h3>
+        <p class="text-sm text-slate-800/90 dark:text-slate-100/90">
+          Track income, expenses, and categories with forms designed around how you actually run your business.
+        </p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-white/5">
+        <h3 class="font-semibold mb-2 text-numyn-gold">Form templates & exports</h3>
+        <p class="text-sm text-slate-800/90 dark:text-slate-100/90">
+          Generate clean summaries and exports you can hand directly to your accountant or plug into tax software.
+        </p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-white/5">
+        <h3 class="font-semibold mb-2 text-numyn-gold">Your data, your machine</h3>
+        <p class="text-sm text-slate-800/90 dark:text-slate-100/90">
+          Numyn runs locally. No forced cloud sync. You keep full control of your financial records.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how-it-works" class="max-w-5xl mx-auto px-4 pb-16">
+    <div class="text-center mb-10">
+      <h2 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-50">How Numyn fits into your workflow.</h2>
+    </div>
+    <ol class="space-y-6 text-sm text-slate-800/95 dark:text-slate-100/90">
+      <li class="flex gap-4">
+        <span class="h-7 w-7 flex items-center justify-center rounded-full bg-numyn-gold text-numyn-navy font-bold text-sm">1</span>
+        <div>
+          <h3 class="font-semibold">Install Numyn &amp; set your fiscal year</h3>
+          <p class="text-slate-700/90 dark:text-slate-200/90">
+            Enter your business details once, choose your fiscal year, and you’re ready to start logging activity.
+          </p>
+        </div>
+      </li>
+      <li class="flex gap-4">
+        <span class="h-7 w-7 flex items-center justify-center rounded-full bg-numyn-gold text-numyn-navy font-bold text-sm">2</span>
+        <div>
+          <h3 class="font-semibold">Log income &amp; expenses as you go</h3>
+          <p class="text-slate-700/90 dark:text-slate-200/90">
+            Use Numyn’s forms after markets, online payouts, or supply runs so everything stays current.
+          </p>
+        </div>
+      </li>
+      <li class="flex gap-4">
+        <span class="h-7 w-7 flex items-center justify-center rounded-full bg-numyn-gold text-numyn-navy font-bold text-sm">3</span>
+        <div>
+          <h3 class="font-semibold">Export clean summaries at tax time</h3>
+          <p class="text-slate-700/90 dark:text-slate-200/90">
+            Generate summaries and reports mapped to common Canadian small business needs, ready for your T2125 workflow.
+          </p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- Support -->
+  <section id="support" class="max-w-5xl mx-auto px-4 pb-16">
+    <div class="rounded-3xl border border-slate-200 bg-white p-6 md:p-8 shadow-sm dark:border-white/10 dark:bg-white/5">
+      <h2 class="text-2xl font-extrabold mb-3 text-slate-900 dark:text-slate-50">Need help or have questions?</h2>
+      <p class="text-sm text-slate-700/90 dark:text-slate-100/90 mb-4">
+        Numyn is built and supported by a solo developer in Canada. If you run into issues,
+        want to request a feature, or have questions about whether Numyn is right for your business, reach out.
+      </p>
+      <div class="flex flex-wrap gap-3 text-sm">
+        <a href="mailto:support@numyn.ca" class="inline-flex items-center px-4 py-2 rounded-full bg-numyn-gold text-numyn-navy font-semibold hover:bg-numyn-goldLight transition">
+          Email support@numyn.ca
+        </a>
+        <a href="mailto:hello@numyn.ca" class="inline-flex items-center px-4 py-2 rounded-full border border-slate-300 text-slate-800 hover:bg-slate-100 dark:border-white/20 dark:text-slate-100 dark:hover:bg-white/5 transition">
+          General questions
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="border-t border-slate-200/70 dark:border-white/10 mt-10">
+    <div class="max-w-5xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-300/80">
+      <p>© <span id="year"></span> Numyn. Built in Canada by Kayden Cormier.</p>
+      <div class="flex gap-4">
+        <a href="privacy.html" class="hover:text-numyn-gold">Privacy</a>
+        <a href="eula.html" class="hover:text-numyn-gold">EULA</a>
+        <a href="faq.html" class="hover:text-numyn-gold">FAQ</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    const html = document.documentElement;
+
+    // Theme preference
+    const stored = localStorage.getItem("numyn-theme");
+    const systemPrefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    const useDark = stored ? stored === "dark" : systemPrefersDark;
+    html.classList.toggle("dark", useDark);
+
+    const iconDesktop = document.getElementById("themeToggleIcon");
+    const iconMobile = document.getElementById("themeToggleIconMobile");
+
+    if (iconDesktop) iconDesktop.textContent = useDark ? "🌙" : "☀️";
+    if (iconMobile) iconMobile.textContent = useDark ? "🌙" : "☀️";
+
+    // Footer year
+    const yearEl = document.getElementById("year");
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    // Mobile menu
+    const mobileBtn = document.getElementById("mobileMenuButton");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const iconOpen = document.getElementById("mobileMenuIconOpen");
+    const iconClose = document.getElementById("mobileMenuIconClose");
+
+    if (mobileBtn && mobileMenu && iconOpen && iconClose) {
+      mobileBtn.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+        iconOpen.classList.toggle("hidden");
+        iconClose.classList.toggle("hidden");
+      });
+    }
+  })();
+
+  function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.classList.toggle("dark");
+    localStorage.setItem("numyn-theme", isDark ? "dark" : "light");
+
+    const iconDesktop = document.getElementById("themeToggleIcon");
+    const iconMobile = document.getElementById("themeToggleIconMobile");
+
+    if (iconDesktop) iconDesktop.textContent = isDark ? "🌙" : "☀️";
+    if (iconMobile) iconMobile.textContent = isDark ? "🌙" : "☀️";
+  }
+</script>
+
+</body>
+</html>
