@@ -358,7 +358,7 @@
     }
   </script>
 
-  <!-- CUBE + PRODUCT LOGIC -->
+    <!-- CUBE + PRODUCT LOGIC -->
   <script>
     const NUMYN_PRODUCTS = [
       {
@@ -370,6 +370,7 @@
         statusText: "Planned for launch with bundled pricing",
         priceLabel: "Pricing: TBD (CAD · one-time bundle)",
         color: 0xFFCC4D,
+        faceImage: "launch-face.png",
       },
       {
         id: "core",
@@ -380,6 +381,7 @@
         statusText: "Available at launch",
         priceLabel: "Pricing: TBD (CAD · one-time license)",
         color: 0xF7B729,
+        faceImage: "core-face.png",
       },
       {
         id: "tax",
@@ -390,6 +392,7 @@
         statusText: "Available alongside Numyn Core at launch",
         priceLabel: "Pricing: TBD (CAD · add-on module)",
         color: 0x34D399,
+        faceImage: "tax-face.png",
       },
       {
         id: "inventory",
@@ -400,6 +403,7 @@
         statusText: "Planned add-on, currently in design",
         priceLabel: "Pricing to be announced closer to release",
         color: 0x9CA3AF,
+        faceImage: "inventory-face.png",
       },
       {
         id: "payroll",
@@ -410,6 +414,7 @@
         statusText: "Planned add-on, currently in early design",
         priceLabel: "Pricing to be announced closer to release",
         color: 0x6366F1,
+        faceImage: "payroll-face.png",
       },
     ];
 
@@ -421,11 +426,70 @@
     const buyButtonEl = document.getElementById("buyButton");
     const productCards = Array.from(document.querySelectorAll(".product-card"));
 
-    let activeProductId = "core";
-    let cubeMaterial = null;
+    let activeProductId = "launch-bundle";
     let scene, camera, renderer, cube;
     let baseRotationSpeed = 0.005;
     let spinBoost = 0;
+
+    // --- TEXTURE HELPERS ----------------------------------------------------
+
+    const textureLoader = new THREE.TextureLoader();
+    const textureCache = {};
+
+    function loadTexture(path) {
+      if (textureCache[path]) return textureCache[path];
+      const tex = textureLoader.load(path);
+      textureCache[path] = tex;
+      return tex;
+    }
+
+    function createCubeMaterials(productId) {
+      const product =
+        NUMYN_PRODUCTS.find((p) => p.id === productId) || NUMYN_PRODUCTS[0];
+
+      const logoTex = loadTexture("assets/numyn-logo-transparent.png");
+      const faceTex = loadTexture("assets/" + product.faceImage);
+      const topBottomColor = product.color || 0xF7B729;
+
+      // Order of faces in BoxGeometry:
+      // 0: right, 1: left, 2: top, 3: bottom, 4: front, 5: back
+      return [
+        new THREE.MeshStandardMaterial({
+          map: logoTex,
+          transparent: true,
+          metalness: 0.4,
+          roughness: 0.35,
+        }), // right
+        new THREE.MeshStandardMaterial({
+          map: logoTex,
+          transparent: true,
+          metalness: 0.4,
+          roughness: 0.35,
+        }), // left
+        new THREE.MeshStandardMaterial({
+          color: topBottomColor,
+          metalness: 0.3,
+          roughness: 0.4,
+        }), // top
+        new THREE.MeshStandardMaterial({
+          color: topBottomColor,
+          metalness: 0.3,
+          roughness: 0.4,
+        }), // bottom
+        new THREE.MeshStandardMaterial({
+          map: faceTex,
+          metalness: 0.3,
+          roughness: 0.35,
+        }), // front
+        new THREE.MeshStandardMaterial({
+          map: faceTex,
+          metalness: 0.3,
+          roughness: 0.35,
+        }), // back
+      ];
+    }
+
+    // --- PRODUCT PANEL LOGIC -----------------------------------------------
 
     function setActiveProduct(id) {
       const product = NUMYN_PRODUCTS.find((p) => p.id === id);
@@ -450,12 +514,14 @@
         buyButtonEl.disabled = true;
         buyButtonEl.textContent = "Coming Soon";
       } else {
-        buyButtonEl.disabled = true; // enable & wire LS later
+        buyButtonEl.disabled = true; // will hook to LS later
         buyButtonEl.textContent = "Buy License (Coming Soon)";
       }
 
-      if (cubeMaterial) {
-        cubeMaterial.color.setHex(product.color);
+      // Update cube materials + little spin boost
+      if (cube) {
+        cube.material = createCubeMaterials(id);
+        cube.material.needsUpdate = true;
         spinBoost = 0.18;
       }
 
@@ -469,9 +535,15 @@
       card.addEventListener("click", () => {
         const id = card.dataset.productId;
         setActiveProduct(id);
-        card.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+        card.scrollIntoView({
+          behavior: "smooth",
+          inline: "center",
+          block: "nearest",
+        });
       });
     });
+
+    // --- CUBE / THREE.JS SETUP ---------------------------------------------
 
     function initCube() {
       const canvas = document.getElementById("numynCubeCanvas");
@@ -484,7 +556,11 @@
       camera = new THREE.PerspectiveCamera(35, aspect, 0.1, 100);
       camera.position.z = 5;
 
-      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+      renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: true,
+        alpha: true,
+      });
       renderer.setPixelRatio(window.devicePixelRatio || 1);
       renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
 
@@ -496,13 +572,9 @@
       scene.add(directional);
 
       const geometry = new THREE.BoxGeometry(1.8, 1.8, 1.8);
-      cubeMaterial = new THREE.MeshStandardMaterial({
-        color: 0xF7B729,
-        metalness: 0.3,
-        roughness: 0.35,
-      });
 
-      cube = new THREE.Mesh(geometry, cubeMaterial);
+      const initialMaterials = createCubeMaterials(activeProductId);
+      cube = new THREE.Mesh(geometry, initialMaterials);
       scene.add(cube);
 
       window.addEventListener("resize", () => onWindowResizeCube(canvas));
