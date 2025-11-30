@@ -359,258 +359,286 @@
   </script>
 
     <!-- CUBE + PRODUCT LOGIC -->
-  <script>
-    const NUMYN_PRODUCTS = [
-      {
-        id: "launch-bundle",
-        name: "Numyn Launch Bundle",
-        badge: "Bundle",
-        description: "Includes Numyn Core + Tax Helper together for a discounted one-time price.",
-        status: "launch",
-        statusText: "Planned for launch with bundled pricing",
-        priceLabel: "Pricing: TBD (CAD · one-time bundle)",
-        color: 0xFFCC4D,
-        faceImage: "launch-face.png",
-      },
-      {
-        id: "core",
-        name: "Numyn Core",
-        badge: "Core App",
-        description: "The main Numyn desktop app for bookkeeping, forms, and financial tracking.",
-        status: "launch",
-        statusText: "Available at launch",
-        priceLabel: "Pricing: TBD (CAD · one-time license)",
-        color: 0xF7B729,
-        faceImage: "core-face.png",
-      },
-      {
-        id: "tax",
-        name: "Numyn Tax Helper",
-        badge: "Add-on",
-        description: "Tools and exports designed to support your T2125 and tax workflow.",
-        status: "launch",
-        statusText: "Available alongside Numyn Core at launch",
-        priceLabel: "Pricing: TBD (CAD · add-on module)",
-        color: 0x34D399,
-        faceImage: "tax-face.png",
-      },
-      {
-        id: "inventory",
-        name: "Numyn Inventory",
-        badge: "Add-on",
-        description: "Deeper inventory tracking, quantities, and reports for product-based businesses.",
-        status: "coming-soon",
-        statusText: "Planned add-on, currently in design",
-        priceLabel: "Pricing to be announced closer to release",
-        color: 0x9CA3AF,
-        faceImage: "inventory-face.png",
-      },
-      {
-        id: "payroll",
-        name: "Numyn Payroll",
-        badge: "Add-on",
-        description: "Planned future module to help small teams track payroll-related records within Numyn.",
-        status: "coming-soon",
-        statusText: "Planned add-on, currently in early design",
-        priceLabel: "Pricing to be announced closer to release",
-        color: 0x6366F1,
-        faceImage: "payroll-face.png",
-      },
-    ];
+    <script>
+  const NUMYN_PRODUCTS = [
+    {
+      id: "launch-bundle",
+      name: "Numyn Launch Bundle",
+      badge: "Bundle",
+      description: "Includes Numyn Core + Tax Helper together for a discounted one-time price.",
+      status: "launch",
+      statusText: "Planned for launch with bundled pricing",
+      priceLabel: "Pricing: TBD (CAD · one-time bundle)",
+      color: 0xFFCC4D,
+      textureKey: "launch",
+    },
+    {
+      id: "core",
+      name: "Numyn Core",
+      badge: "Core App",
+      description: "The main Numyn desktop app for bookkeeping, forms, and financial tracking.",
+      status: "launch",
+      statusText: "Available at launch",
+      priceLabel: "Pricing: TBD (CAD · one-time license)",
+      color: 0x071B2F,        // Numyn Navy
+      textureKey: "core",
+    },
+    {
+      id: "tax",
+      name: "Numyn Tax Helper",
+      badge: "Add-on",
+      description: "Tools and exports designed to support your T2125 and tax workflow.",
+      status: "launch",
+      statusText: "Available alongside Numyn Core at launch",
+      priceLabel: "Pricing: TBD (CAD · add-on module)",
+      color: 0x34D399,
+      textureKey: "tax",
+    },
+    {
+      id: "inventory",
+      name: "Numyn Inventory",
+      badge: "Add-on",
+      description: "Deeper inventory tracking, quantities, and reports for product-based businesses.",
+      status: "coming-soon",
+      statusText: "Planned add-on, currently in design",
+      priceLabel: "Pricing to be announced closer to release",
+      color: 0x9CA3AF,
+      textureKey: "inventory",
+    },
+    {
+      id: "payroll",
+      name: "Numyn Payroll",
+      badge: "Add-on",
+      description: "Planned future module to help small teams track payroll-related records within Numyn.",
+      status: "coming-soon",
+      statusText: "Planned add-on, currently in early design",
+      priceLabel: "Pricing to be announced closer to release",
+      color: 0x6366F1,
+      textureKey: "payroll",
+    },
+  ];
 
-    const activeBadgeEl = document.getElementById("activeBadge");
-    const activeNameEl = document.getElementById("activeName");
-    const activeDescriptionEl = document.getElementById("activeDescription");
-    const activeStatusEl = document.getElementById("activeStatus");
-    const activePriceEl = document.getElementById("activePrice");
-    const buyButtonEl = document.getElementById("buyButton");
-    const productCards = Array.from(document.querySelectorAll(".product-card"));
+  const activeBadgeEl = document.getElementById("activeBadge");
+  const activeNameEl = document.getElementById("activeName");
+  const activeDescriptionEl = document.getElementById("activeDescription");
+  const activeStatusEl = document.getElementById("activeStatus");
+  const activePriceEl = document.getElementById("activePrice");
+  const buyButtonEl = document.getElementById("buyButton");
+  const productCards = Array.from(document.querySelectorAll(".product-card"));
 
-    let activeProductId = "launch-bundle";
-    let scene, camera, renderer, cube;
-    let baseRotationSpeed = 0.005;
-    let spinBoost = 0;
+  // THREE.js globals
+  let activeProductId = "launch-bundle";
+  let cubeMaterial = null;
+  let scene, camera, renderer, cube;
+  let baseRotationSpeed = 0.005;
+  let spinBoost = 0;
 
-    // --- TEXTURE HELPERS ----------------------------------------------------
+  const facePlanes = {
+    front: null,
+    back: null,
+    left: null,
+    right: null,
+    top: null,
+    bottom: null,
+  };
 
-    const textureLoader = new THREE.TextureLoader();
-    const textureCache = {};
+  // Textures
+  const loader = new THREE.TextureLoader();
+  const faceTextures = {
+    core: loader.load("assets/core-face.png"),
+    tax: loader.load("assets/tax-face.png"),
+    inventory: loader.load("assets/inventory-face.png"),
+    payroll: loader.load("assets/payroll-face.png"),
+    launch: loader.load("assets/launch-face.png"),
+  };
 
-    function loadTexture(path) {
-      if (textureCache[path]) return textureCache[path];
-      const tex = textureLoader.load(path);
-      textureCache[path] = tex;
-      return tex;
+  const logoTexture   = loader.load("assets/numyn-logo.png");
+  const topTexture    = loader.load("assets/top-face.png");       // Made in Canada
+  const bottomTexture = loader.load("assets/bottom-face.png");    // Your books, Your data, Your way
+
+  function setActiveProduct(id) {
+    const product = NUMYN_PRODUCTS.find((p) => p.id === id);
+    if (!product) return;
+    activeProductId = id;
+
+    // Text column
+    activeBadgeEl.textContent = product.badge;
+    activeNameEl.textContent = product.name;
+    activeDescriptionEl.textContent = product.description;
+    activeStatusEl.innerHTML =
+      'Status: <span class="font-semibold ' +
+      (product.status === "launch"
+        ? "text-emerald-600 dark:text-emerald-300"
+        : "text-slate-600 dark:text-slate-200") +
+      '">' +
+      product.statusText +
+      "</span>";
+
+    activePriceEl.textContent = product.priceLabel;
+
+    if (product.status === "coming-soon") {
+      buyButtonEl.disabled = true;
+      buyButtonEl.textContent = "Coming Soon";
+    } else {
+      buyButtonEl.disabled = true; // hook up later
+      buyButtonEl.textContent = "Buy License (Coming Soon)";
     }
 
-    function createCubeMaterials(productId) {
-      const product =
-        NUMYN_PRODUCTS.find((p) => p.id === productId) || NUMYN_PRODUCTS[0];
-
-      const logoTex = loadTexture("assets/numyn-logo-transparent.png");
-      const faceTex = loadTexture("assets/" + product.faceImage);
-      const topBottomColor = product.color || 0xF7B729;
-
-      // Order of faces in BoxGeometry:
-      // 0: right, 1: left, 2: top, 3: bottom, 4: front, 5: back
-      return [
-        new THREE.MeshStandardMaterial({
-          map: logoTex,
-          transparent: true,
-          metalness: 0.4,
-          roughness: 0.35,
-        }), // right
-        new THREE.MeshStandardMaterial({
-          map: logoTex,
-          transparent: true,
-          metalness: 0.4,
-          roughness: 0.35,
-        }), // left
-        new THREE.MeshStandardMaterial({
-          color: topBottomColor,
-          metalness: 0.3,
-          roughness: 0.4,
-        }), // top
-        new THREE.MeshStandardMaterial({
-          color: topBottomColor,
-          metalness: 0.3,
-          roughness: 0.4,
-        }), // bottom
-        new THREE.MeshStandardMaterial({
-          map: faceTex,
-          metalness: 0.3,
-          roughness: 0.35,
-        }), // front
-        new THREE.MeshStandardMaterial({
-          map: faceTex,
-          metalness: 0.3,
-          roughness: 0.35,
-        }), // back
-      ];
+    // Cube color
+    if (cubeMaterial) {
+      cubeMaterial.color.setHex(product.color);
+      spinBoost = 0.18;
     }
 
-    // --- PRODUCT PANEL LOGIC -----------------------------------------------
-
-    function setActiveProduct(id) {
-      const product = NUMYN_PRODUCTS.find((p) => p.id === id);
-      if (!product) return;
-      activeProductId = id;
-
-      activeBadgeEl.textContent = product.badge;
-      activeNameEl.textContent = product.name;
-      activeDescriptionEl.textContent = product.description;
-      activeStatusEl.innerHTML =
-        'Status: <span class="font-semibold ' +
-        (product.status === "launch"
-          ? "text-emerald-600 dark:text-emerald-300"
-          : "text-slate-600 dark:text-slate-200") +
-        '">' +
-        product.statusText +
-        "</span>";
-
-      activePriceEl.textContent = product.priceLabel;
-
-      if (product.status === "coming-soon") {
-        buyButtonEl.disabled = true;
-        buyButtonEl.textContent = "Coming Soon";
-      } else {
-        buyButtonEl.disabled = true; // will hook to LS later
-        buyButtonEl.textContent = "Buy License (Coming Soon)";
-      }
-
-      // Update cube materials + little spin boost
-      if (cube) {
-        cube.material = createCubeMaterials(id);
-        cube.material.needsUpdate = true;
-        spinBoost = 0.18;
-      }
-
-      productCards.forEach((card) => {
-        const isActive = card.dataset.productId === id;
-        card.dataset.active = isActive ? "true" : "false";
-      });
+    // Front/back texture
+    const tex = faceTextures[product.textureKey];
+    if (tex && facePlanes.front && facePlanes.back) {
+      facePlanes.front.material.map = tex;
+      facePlanes.back.material.map = tex;
+      facePlanes.front.material.needsUpdate = true;
+      facePlanes.back.material.needsUpdate = true;
     }
 
+    // Card active styling
     productCards.forEach((card) => {
-      card.addEventListener("click", () => {
-        const id = card.dataset.productId;
-        setActiveProduct(id);
-        card.scrollIntoView({
-          behavior: "smooth",
-          inline: "center",
-          block: "nearest",
-        });
-      });
+      const isActive = card.dataset.productId === id;
+      card.dataset.active = isActive ? "true" : "false";
+    });
+  }
+
+  productCards.forEach((card) => {
+    card.addEventListener("click", () => {
+      const id = card.dataset.productId;
+      setActiveProduct(id);
+      card.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    });
+  });
+
+  function initCube() {
+    const canvas = document.getElementById("numynCubeCanvas");
+    if (!canvas || !window.THREE) return;
+
+    scene = new THREE.Scene();
+    scene.background = null;
+
+    const aspect = canvas.clientWidth / canvas.clientHeight || 1;
+    camera = new THREE.PerspectiveCamera(35, aspect, 0.1, 100);
+    camera.position.z = 5;
+
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(window.devicePixelRatio || 1);
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+
+    // Lights
+    const ambient = new THREE.AmbientLight(0xffffff, 0.7);
+    scene.add(ambient);
+
+    const directional = new THREE.DirectionalLight(0xffffff, 0.8);
+    directional.position.set(3, 4, 5);
+    scene.add(directional);
+
+    // Base cube
+    const cubeSize = 1.8;
+    const geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
+    cubeMaterial = new THREE.MeshStandardMaterial({
+      color: 0xF7B729,
+      metalness: 0.3,
+      roughness: 0.35,
     });
 
-    // --- CUBE / THREE.JS SETUP ---------------------------------------------
+    cube = new THREE.Mesh(geometry, cubeMaterial);
+    scene.add(cube);
 
-    function initCube() {
-      const canvas = document.getElementById("numynCubeCanvas");
-      if (!canvas || !window.THREE) return;
+    // Face planes (75% of cube face)
+    const insetSize = cubeSize * 0.75;
+    const faceGeo = new THREE.PlaneGeometry(insetSize, insetSize);
 
-      scene = new THREE.Scene();
-      scene.background = null;
+    const makeFace = (mapTex) => {
+      if (mapTex) {
+        mapTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      }
+      return new THREE.Mesh(
+        faceGeo,
+        new THREE.MeshBasicMaterial({
+          map: mapTex,
+          transparent: true,
+          side: THREE.DoubleSide,
+        })
+      );
+    };
 
-      const aspect = canvas.clientWidth / canvas.clientHeight || 1;
-      camera = new THREE.PerspectiveCamera(35, aspect, 0.1, 100);
-      camera.position.z = 5;
+    // Slightly above surface
+    const offset = cubeSize / 2 + 0.001;
 
-      renderer = new THREE.WebGLRenderer({
-        canvas,
-        antialias: true,
-        alpha: true,
-      });
-      renderer.setPixelRatio(window.devicePixelRatio || 1);
-      renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+    // FRONT/BACK – product art (start with launch bundle)
+    facePlanes.front  = makeFace(faceTextures.launch);
+    facePlanes.back   = makeFace(faceTextures.launch);
 
-      const ambient = new THREE.AmbientLight(0xffffff, 0.7);
-      scene.add(ambient);
+    facePlanes.front.position.set(0, 0, offset);
+    facePlanes.back.position.set(0, 0, -offset);
+    facePlanes.back.rotation.y = Math.PI;
 
-      const directional = new THREE.DirectionalLight(0xffffff, 0.8);
-      directional.position.set(3, 4, 5);
-      scene.add(directional);
+    // LEFT/RIGHT – Numyn logo
+    facePlanes.right = makeFace(logoTexture);
+    facePlanes.left  = makeFace(logoTexture);
 
-      const geometry = new THREE.BoxGeometry(1.8, 1.8, 1.8);
+    // RIGHT faces toward you
+    facePlanes.right.position.set(offset, 0, 0);
+    facePlanes.right.rotation.y = Math.PI / 2;
 
-      const initialMaterials = createCubeMaterials(activeProductId);
-      cube = new THREE.Mesh(geometry, initialMaterials);
-      scene.add(cube);
+    // LEFT faces correctly too (mirrored)
+    facePlanes.left.position.set(-offset, 0, 0);
+    facePlanes.left.rotation.y = -Math.PI / 2;
 
-      window.addEventListener("resize", () => onWindowResizeCube(canvas));
-      animateCube();
+    // TOP/BOTTOM – badges
+    facePlanes.top    = makeFace(topTexture);
+    facePlanes.bottom = makeFace(bottomTexture);
+
+    facePlanes.top.position.set(0, offset, 0);
+    facePlanes.top.rotation.x = -Math.PI / 2;
+
+    facePlanes.bottom.position.set(0, -offset, 0);
+    facePlanes.bottom.rotation.x = Math.PI / 2;
+
+    // Attach all planes to cube so they rotate together
+    Object.values(facePlanes).forEach((mesh) => cube.add(mesh));
+
+    window.addEventListener("resize", () => onWindowResizeCube(canvas));
+    animateCube();
+  }
+
+  function onWindowResizeCube(canvas) {
+    if (!renderer || !camera || !canvas) return;
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight || width;
+
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height, false);
+  }
+
+  function animateCube() {
+    requestAnimationFrame(animateCube);
+
+    const speed = baseRotationSpeed + spinBoost;
+    if (cube) {
+      cube.rotation.y += speed;
+      cube.rotation.x += speed * 0.4;
     }
 
-    function onWindowResizeCube(canvas) {
-      if (!renderer || !camera || !canvas) return;
-      const width = canvas.clientWidth;
-      const height = canvas.clientHeight || width;
-
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-      renderer.setSize(width, height, false);
+    if (spinBoost > 0) {
+      spinBoost = Math.max(0, spinBoost - 0.003);
     }
 
-    function animateCube() {
-      requestAnimationFrame(animateCube);
-
-      const speed = baseRotationSpeed + spinBoost;
-      if (cube) {
-        cube.rotation.y += speed;
-        cube.rotation.x += speed * 0.4;
-      }
-
-      if (spinBoost > 0) {
-        spinBoost = Math.max(0, spinBoost - 0.003);
-      }
-
-      if (renderer && scene && camera) {
-        renderer.render(scene, camera);
-      }
+    if (renderer && scene && camera) {
+      renderer.render(scene, camera);
     }
+  }
 
-    initCube();
-    setActiveProduct("launch-bundle");
-  </script>
+  initCube();
+  setActiveProduct("launch-bundle");
+</script>
+
+
 </body>
 </html>
