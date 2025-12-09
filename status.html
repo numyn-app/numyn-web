@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <title>Numyn – Status</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Live status for the Numyn website and forms API." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Numyn – Status" />
+  <meta property="og:description" content="Check whether Numyn’s website and forms API are operational." />
+
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            numyn: {
+              navy: '#071B2F',
+              navyLight: '#0D2A46',
+              gold: '#F7B729',
+              goldLight: '#FFCC4D'
+            }
+          },
+          fontFamily: {
+            sans: ['Nunito', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/custom.css" />
+</head>
+<body class="min-h-screen bg-slate-100 text-slate-900 dark:bg-numyn-navy dark:text-slate-100 font-sans">
+
+  <!-- HEADER (same pattern as contact/privacy) -->
+  <header class="border-b border-slate-200/70 dark:border-white/5 sticky top-0 z-20 bg-white/90 dark:bg-numyn-navy/90 backdrop-blur">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+      <a href="index.html" class="flex items-center gap-2">
+        <img src="assets/numyn-logo.png" alt="Numyn logo" class="h-8 w-8 rounded-lg" />
+        <span class="text-lg font-extrabold tracking-tight text-slate-900 dark:text-slate-50">Numyn</span>
+      </a>
+
+      <div class="flex items-center gap-3">
+        <nav class="hidden sm:flex items-center gap-6 text-sm text-slate-700 dark:text-slate-200">
+          <a href="features.html" class="hover:text-numyn-gold transition">Features</a>
+          <a href="purchase.html" class="hover:text-numyn-gold transition">Purchase</a>
+          <a href="faq.html" class="hover:text-numyn-gold transition">FAQ</a>
+          <a href="support.html" class="hover:text-numyn-gold transition">Support</a>
+          <a href="contact.html" class="hover:text-numyn-gold transition">Contact</a>
+          <a href="status.html" class="hover:text-numyn-gold transition">Status</a>
+        </nav>
+
+        <button
+          type="button"
+          onclick="toggleTheme()"
+          class="hidden sm:inline-flex items-center justify-center rounded-full border border-slate-300/70 dark:border-white/20 px-2.5 py-1 text-xs font-medium text-slate-700 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-white/10 transition"
+        >
+          <span id="themeToggleIcon" aria-hidden="true">🌙</span>
+          <span class="sr-only">Toggle light/dark mode</span>
+        </button>
+
+        <a href="purchase.html" class="hidden sm:inline-flex px-4 py-2 rounded-full text-sm font-semibold bg-numyn-gold text-numyn-navy hover:bg-numyn-goldLight transition">
+          Get Numyn
+        </a>
+
+        <button
+          id="mobileMenuButton"
+          type="button"
+          class="sm:hidden inline-flex items-center justify-center rounded-full border border-slate-300/70 dark:border-white/20 p-2 text-slate-700 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-white/10 transition"
+        >
+          <span id="mobileMenuIconOpen" aria-hidden="true">☰</span>
+          <span id="mobileMenuIconClose" class="hidden" aria-hidden="true">✕</span>
+          <span class="sr-only">Toggle navigation</span>
+        </button>
+      </div>
+    </div>
+
+    <div
+      id="mobileMenu"
+      class="sm:hidden hidden border-t border-slate-200/70 dark:border-white/10 bg-white/95 dark:bg-numyn-navy/95"
+    >
+      <nav class="max-w-5xl mx-auto px-4 py-3 flex flex-col gap-3 text-sm text-slate-800 dark:text-slate-100">
+        <a href="features.html" class="py-1 hover:text-numyn-gold transition">Features</a>
+        <a href="purchase.html" class="py-1 hover:text-numyn-gold transition">Purchase</a>
+        <a href="faq.html" class="py-1 hover:text-numyn-gold transition">FAQ</a>
+        <a href="support.html" class="py-1 hover:text-numyn-gold transition">Support</a>
+        <a href="contact.html" class="py-1 hover:text-numyn-gold transition">Contact</a>
+        <a href="status.html" class="py-1 hover:text-numyn-gold transition">Status</a>
+
+        <button
+          type="button"
+          onclick="toggleTheme()"
+          class="mt-2 inline-flex items-center justify-center rounded-full border border-slate-300/70 dark:border-white/20 px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-white/10 transition"
+        >
+          <span id="themeToggleIconMobile" aria-hidden="true">🌙</span>
+          <span class="sr-only">Toggle light/dark mode</span>
+        </button>
+
+        <a
+          href="purchase.html"
+          class="mt-2 inline-flex items-center justify-center px-4 py-2 rounded-full text-sm font-semibold bg-numyn-gold text-numyn-navy hover:bg-numyn-goldLight transition"
+        >
+          Get Numyn
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-3xl mx-auto px-4 pt-10 pb-16 space-y-6">
+    <div class="flex items-center gap-3 mb-2">
+      <img src="assets/numyn-logo.png" alt="Numyn logo" class="h-10 w-10 rounded-xl shadow-sm" />
+      <div>
+        <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-50">
+          Numyn status
+        </h1>
+        <p class="text-sm text-slate-700/90 dark:text-slate-200/90">
+          Check whether the Numyn website and forms API are operational.
+        </p>
+      </div>
+    </div>
+
+    <!-- API card -->
+    <div class="rounded-2xl border border-slate-200/80 dark:border-slate-700 bg-white dark:bg-slate-900/80 p-4 shadow-sm">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h2 class="text-sm font-semibold text-slate-800 dark:text-slate-100">
+            Forms API (api.numyn.ca)
+          </h2>
+          <p class="text-[11px] text-slate-500 dark:text-slate-300/80">
+            Based on the <span class="font-mono text-[10px]">/api/v1/health</span> endpoint.
+          </p>
+        </div>
+        <div id="apiStatusBadge" class="text-[11px] px-2 py-1 rounded-full bg-slate-500/10 text-slate-300">
+          Checking…
+        </div>
+      </div>
+
+      <dl class="mt-3 text-[11px] space-y-0.5 text-slate-700 dark:text-slate-200">
+        <div>
+          <dt class="inline font-semibold">Overall:</dt>
+          <dd id="apiOverall" class="inline">–</dd>
+        </div>
+        <div>
+          <dt class="inline font-semibold">DB status:</dt>
+          <dd id="apiDb" class="inline">–</dd>
+        </div>
+        <div>
+          <dt class="inline font-semibold">Version:</dt>
+          <dd id="apiVersion" class="inline">–</dd>
+        </div>
+        <div>
+          <dt class="inline font-semibold">Uptime:</dt>
+          <dd id="apiUptime" class="inline">–</dd>
+        </div>
+        <div>
+          <dt class="inline font-semibold">Waitlist count:</dt>
+          <dd id="apiWaitlistCount" class="inline">–</dd>
+        </div>
+        <div>
+          <dt class="inline font-semibold">Last checked:</dt>
+          <dd id="apiLastChecked" class="inline">–</dd>
+        </div>
+      </dl>
+
+      <!-- Uptime history bar -->
+      <div class="mt-4">
+        <h3 class="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400 mb-1">
+          Recent checks
+        </h3>
+        <div
+          id="apiUptimeBar"
+          class="flex flex-wrap gap-[2px] mt-1"
+          aria-label="Recent API uptime checks"
+        ></div>
+        <p class="mt-1 text-[10px] text-slate-500 dark:text-slate-400">
+          Each bar is one status check from this browser over time.
+          Green = up, yellow = degraded, red = unreachable.
+        </p>
+      </div>
+    </div>
+
+    <p class="text-[10px] text-slate-500 dark:text-slate-400">
+      This page is informational only and refreshes every 60 seconds. If something looks off but you’re having issues with Numyn,
+      you can always email <a href="mailto:support@numyn.ca" class="underline">support@numyn.ca</a>.
+    </p>
+  </main>
+
+  <footer class="border-t border-slate-200/70 dark:border-white/10 mt-10">
+    <div class="max-w-5xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-300/80">
+      <p>© <span id="year"></span> Numyn. Built in Canada by Kayden Cormier.</p>
+      <div class="flex gap-4">
+        <a href="privacy.html" class="hover:text-numyn-gold">Privacy</a>
+        <a href="eula.html" class="hover:text-numyn-gold">EULA</a>
+        <a href="faq.html" class="hover:text-numyn-gold">FAQ</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Theme + mobile menu (same pattern as other pages)
+    (function () {
+      const html = document.documentElement;
+
+      const stored = localStorage.getItem("numyn-theme");
+      const systemPrefersDark =
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+      const useDark = stored ? stored === "dark" : systemPrefersDark;
+      html.classList.toggle("dark", useDark);
+
+      const iconDesktop = document.getElementById("themeToggleIcon");
+      const iconMobile = document.getElementById("themeToggleIconMobile");
+
+      if (iconDesktop) iconDesktop.textContent = useDark ? "🌙" : "☀️";
+      if (iconMobile) iconMobile.textContent = useDark ? "🌙" : "☀️";
+
+      const yearEl = document.getElementById("year");
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+      const mobileBtn = document.getElementById("mobileMenuButton");
+      const mobileMenu = document.getElementById("mobileMenu");
+      const iconOpen = document.getElementById("mobileMenuIconOpen");
+      const iconClose = document.getElementById("mobileMenuIconClose");
+
+      if (mobileBtn && mobileMenu && iconOpen && iconClose) {
+        mobileBtn.addEventListener("click", () => {
+          mobileMenu.classList.toggle("hidden");
+          iconOpen.classList.toggle("hidden");
+          iconClose.classList.toggle("hidden");
+        });
+      }
+    })();
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.classList.toggle("dark");
+      localStorage.setItem("numyn-theme", isDark ? "dark" : "light");
+
+      const iconDesktop = document.getElementById("themeToggleIcon");
+      const iconMobile = document.getElementById("themeToggleIconMobile");
+
+      if (iconDesktop) iconDesktop.textContent = isDark ? "🌙" : "☀️";
+      if (iconMobile) iconMobile.textContent = isDark ? "🌙" : "☀️";
+    }
+
+    // Status + uptime history
+    (function () {
+      const API_BASE =
+        window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+          ? "http://127.0.0.1:8000"
+          : "https://api.numyn.ca";
+
+      const badge = document.getElementById("apiStatusBadge");
+      const overall = document.getElementById("apiOverall");
+      const db = document.getElementById("apiDb");
+      const version = document.getElementById("apiVersion");
+      const uptime = document.getElementById("apiUptime");
+      const waitlistCount = document.getElementById("apiWaitlistCount");
+      const lastChecked = document.getElementById("apiLastChecked");
+      const bar = document.getElementById("apiUptimeBar");
+
+      const HISTORY_KEY = "numyn-api-uptime-history";
+      const MAX_SAMPLES = 96; // last 96 checks
+
+      function loadHistory() {
+        try {
+          const raw = localStorage.getItem(HISTORY_KEY);
+          if (!raw) return [];
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed) ? parsed : [];
+        } catch {
+          return [];
+        }
+      }
+
+      function saveHistory(history) {
+        try {
+          localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+        } catch {
+          // ignore
+        }
+      }
+
+      function renderHistory(history) {
+        if (!bar) return;
+        bar.innerHTML = "";
+        history.forEach((sample) => {
+          const div = document.createElement("div");
+          div.classList.add("w-2", "h-4", "rounded-sm");
+
+          if (sample.status === "up") {
+            div.classList.add("bg-emerald-400");
+          } else if (sample.status === "degraded") {
+            div.classList.add("bg-amber-400");
+          } else {
+            div.classList.add("bg-rose-400");
+          }
+
+          bar.appendChild(div);
+        });
+      }
+
+      function addSample(status) {
+        const history = loadHistory();
+        history.push({
+          status, // "up" | "degraded" | "down"
+          t: Date.now(),
+        });
+        while (history.length > MAX_SAMPLES) {
+          history.shift();
+        }
+        saveHistory(history);
+        renderHistory(history);
+      }
+
+      async function refresh() {
+        if (badge) {
+          badge.textContent = "Checking…";
+          badge.className = "text-[11px] px-2 py-1 rounded-full bg-slate-500/10 text-slate-300";
+        }
+
+        let sampleStatus = "down";
+
+        try {
+          const res = await fetch(API_BASE + "/api/v1/health", { method: "GET" });
+          const data = await res.json().catch(() => ({}));
+
+          const ok = res.ok && data.ok;
+
+          if (ok) {
+            sampleStatus = "up";
+          } else if (res.ok) {
+            sampleStatus = "degraded";
+          } else {
+            sampleStatus = "down";
+          }
+
+          if (badge) {
+            if (sampleStatus === "up") {
+              badge.textContent = "● Operational";
+              badge.className = "text-[11px] px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-300";
+            } else if (sampleStatus === "degraded") {
+              badge.textContent = "● Degraded";
+              badge.className = "text-[11px] px-2 py-1 rounded-full bg-amber-500/10 text-amber-300";
+            } else {
+              badge.textContent = "● Unreachable";
+              badge.className = "text-[11px] px-2 py-1 rounded-full bg-rose-500/10 text-rose-300";
+            }
+          }
+
+          if (overall) overall.textContent = data.status || (ok ? "ok" : "unknown");
+          if (db) db.textContent = data.db && data.db.status ? data.db.status : "unknown";
+          if (version) version.textContent = data.app_version || "dev";
+
+          if (uptime) {
+            if (data.uptime_seconds != null) {
+              const sec = data.uptime_seconds;
+              const hours = Math.floor(sec / 3600);
+              const mins = Math.floor((sec % 3600) / 60);
+              uptime.textContent = `~${hours}h ${mins}m`;
+            } else {
+              uptime.textContent = "n/a";
+            }
+          }
+
+          if (waitlistCount) {
+            const c = data.metrics && data.metrics.waitlist_count;
+            waitlistCount.textContent = c != null ? c : "n/a";
+          }
+
+          if (lastChecked) {
+            lastChecked.textContent = new Date().toLocaleString();
+          }
+        } catch (err) {
+          sampleStatus = "down";
+
+          if (badge) {
+            badge.textContent = "● Unreachable";
+            badge.className = "text-[11px] px-2 py-1 rounded-full bg-rose-500/10 text-rose-300";
+          }
+          if (overall) overall.textContent = "unreachable";
+          if (db) db.textContent = "n/a";
+          if (version) version.textContent = "n/a";
+          if (uptime) uptime.textContent = "n/a";
+          if (waitlistCount) waitlistCount.textContent = "n/a";
+          if (lastChecked) lastChecked.textContent = new Date().toLocaleString();
+        }
+
+        addSample(sampleStatus);
+      }
+
+      // initial render + polling
+      renderHistory(loadHistory());
+      refresh();
+      setInterval(refresh, 60000);
+    })();
+  </script>
+</body>
+</html>
