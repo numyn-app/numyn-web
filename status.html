@@ -177,7 +177,7 @@
         </h3>
         <div
           id="apiUptimeBar"
-          class="flex flex-wrap gap-[2px] mt-1"
+          class="flex gap-[2px] mt-1 flex-nowrap overflow-x-auto"
           aria-label="Recent API uptime checks"
         ></div>
         <p class="mt-1 text-[10px] text-slate-500 dark:text-slate-400">
@@ -188,7 +188,7 @@
     </div>
 
     <p class="text-[10px] text-slate-500 dark:text-slate-400">
-      This page is informational only and refreshes every 60 seconds. If something looks off but you’re having issues with Numyn,
+      This page is informational only and refreshes every 30 minutes. If something looks off but you’re having issues with Numyn,
       you can always email <a href="mailto:support@numyn.ca" class="underline">support@numyn.ca</a>.
     </p>
   </main>
@@ -292,6 +292,7 @@
 
       function renderHistory(history) {
         if (!bar) return;
+        // clear then render samples in a single horizontal row
         bar.innerHTML = "";
         history.forEach((sample) => {
           const div = document.createElement("div");
@@ -307,6 +308,14 @@
 
           bar.appendChild(div);
         });
+
+        // keep the view scrolled to the newest sample
+        try {
+          bar.style.scrollBehavior = 'smooth';
+          bar.scrollLeft = bar.scrollWidth;
+        } catch (e) {
+          // ignore if scrolling isn't supported
+        }
       }
 
       function addSample(status) {
@@ -398,10 +407,11 @@
         addSample(sampleStatus);
       }
 
-      // initial render + polling
+      // initial render + polling (every 30 minutes)
       renderHistory(loadHistory());
       refresh();
-      setInterval(refresh, 60000);
+      // 30 minutes = 30 * 60 * 1000 ms
+      setInterval(refresh, 30 * 60 * 1000);
     })();
   </script>
 </body>
