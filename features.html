@@ -198,11 +198,7 @@
 
     // Theme preference
     const stored = localStorage.getItem("numyn-theme");
-    const systemPrefersDark =
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-    const useDark = stored ? stored === "dark" : systemPrefersDark;
+    const useDark = stored !== "light";
     html.classList.toggle("dark", useDark);
 
     const iconDesktop = document.getElementById("themeToggleIcon");
