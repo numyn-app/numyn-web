@@ -294,6 +294,7 @@
             const data = await res.json().catch(() => ({}));
 
             if (res.ok && data.ok) {
+              if (res.status === 201) window.dispatchEvent(new Event("numyn:waitlist-signup-success"));
               msgEl.textContent = data.message || "You’re on the waitlist!";
               msgEl.classList.add("text-emerald-600");
               form.reset();
@@ -356,4 +357,5 @@
   </script>
 </body>
 </html>
+
 
